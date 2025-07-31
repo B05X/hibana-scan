@@ -143,18 +143,53 @@ def user_lookup():    # Benutzerabfrage
             print(f"({name}) (-)")
         time.sleep(1)
 
-def main_menu():     # Main Menu
+def webhook_spam():   #Webhook Spam
+    print("\n--- Webhook Spam ---")
+    webhook_url = input("Enter the Discord Webhook URL: ").strip()
+    message = input("Enter the message to spam: ").strip()
+    count = input("How many messages do you want to send? (Enter a number): ").strip()
+
+    try:
+        count = int(count)
+    except ValueError:
+        print("Invalid number, defaulting to 10 messages.")
+        count = 10
+
+    print(f"Sending {count} messages to the webhook...")
+    for i in range(count):
+        data = {"content": message}
+        try:
+            response = requests.post(webhook_url, json=data)
+            if response.status_code == 204:
+                print(f"Message {i+1}/{count} sent successfully.")
+            else:
+                print(f"Failed to send message {i+1}. Status code: {response.status_code}")
+        except requests.RequestException as e:
+            print(f"Error sending message {i+1}: {e}")
+
+        time.sleep(0.5)  # 1 Sekunde Pause zwischen Nachrichten, um Spam-Blockierungen zu vermeiden
+
+    print("Finished sending messages.")
+
+
+
+
+
+def main_menu():  # Hauptmenü
     explanation()
     while True:
         print("\nMain Menu:")
         print("1. User Lookup")
-        print("2. Exit")
+        print("2. Webhook Spam")   # Neue Option
+        print("3. Exit")
 
         choice = input("Enter your choice: ")
 
         if choice == '1':
             user_lookup()
         elif choice == '2':
+            webhook_spam()      # Funktion aufrufen
+        elif choice == '3':
             print("Exiting the Hibanas Doxxer. Goodbye!")
             break
         else:
@@ -162,3 +197,4 @@ def main_menu():     # Main Menu
 
 if __name__ == "__main__":
     main_menu()
+
