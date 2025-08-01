@@ -28,7 +28,7 @@ cd hibana-scan
 pip install -r requirements.txt
 
 # 4. run
-python hibana_scan.py
+python hibana-scan.py
 
 ```
 Continuous Improvements
