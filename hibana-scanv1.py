@@ -1,77 +1,62 @@
 import time
 import requests 
 import re 
-import os        
+import os
+from colorama import init, Fore, Back, Style
 
+# Initialize colorama
+init(autoreset=True)
 
-
-
-#hibanas Doxxer
-
-
-#Logo
-print(r"""
-                                         .""--..__
-                     _                     []       ``-.._
-                  .'` `'.                  ||__           `-._
-                 /    ,-.\                 ||_ ```---..__     `-.
-                /    /:::\\               /|//}          ``--._  `.
-                |    |:::||              |////}                `-. \\
-                |    |:::||             //'///                    `.\\
-                |    |:::||            //  ||'                      `|
-        hibana  /    |:::|/        _,-//\\  ||
-               /`    |:::|`-,__,-'`  |/  \\ ||
-             /`  |   |'' ||           \\   |||
-           /`    \\   |   ||            |  /||
-         |`       |  |   |)            \\ | ||
-        |          \\ |   /      ,.__    \\| ||
-        /           `         /`    `\\   | ||
-       |                     /        \\  / ||
-       |                     |        | /  ||
-       /         /           |        `(`  ||
-      /          .           /          )  ||
-     |            \\          |     ________||
-    /             |          /     `-------.|
-   |\\            /          |              ||
-   \\/`-._       |           /              ||
-    //   `.    /`           |              ||
-   //`.    `. |             \\              ||
-  ///\\ `-._  )/             |              ||
- //// )   .(/               |              ||
- ||||   ,'` )               /              //
- ||||  /                    /             || 
- `\\\\` /`                    |             // 
-     |`                     \\            ||  
-    /                        |           //  
-  /`                          \\         //   
-/`                            |        ||    
-`-.___,-.      .-.        ___,'        (/    
-         `---'`   `'----'`
-""")
-
-#Funcion
-
+# Hibanas Doxxer - Enhanced Version
+def print_banner():
+    print(Fore.CYAN + r"""
+    ██░ ██  ██▓ ▄▄▄▄    ▄▄▄       ███▄    █  ▄▄▄      
+▓██░ ██▒▓██▒▓█████▄ ▒████▄     ██ ▀█   █ ▒████▄    
+▒██▀▀██░▒██▒▒██▒ ▄██▒██  ▀█▄  ▓██  ▀█ ██▒▒██  ▀█▄  
+░▓█ ░██ ░██░▒██░█▀  ░██▄▄▄▄██ ▓██▒  ▐▌██▒░██▄▄▄▄██ 
+░▓█▒░██▓░██░░▓█  ▀█▓ ▓█   ▓██▒▒██░   ▓██░ ▓█   ▓██▒
+ ▒ ░░▒░▒░▓  ░▒▓███▀▒ ▒▒   ▓▒█░░ ▒░   ▒ ▒  ▒▒   ▓▒█░
+ ▒ ░▒░ ░ ▒ ░▒░▒   ░   ▒   ▒▒ ░░ ░░   ░ ▒░  ▒   ▒▒ ░
+ ░  ░░ ░ ▒ ░ ░    ░   ░   ▒      ░   ░ ░   ░   ▒   
+ ░  ░  ░ ░   ░            ░  ░         ░       ░  ░
+                  ░                               
+    """)
+    print(Fore.YELLOW + "=" * 60)
+    print(Fore.MAGENTA + "HIBANA'S OSINT TOOLKIT".center(60))
+    print(Fore.YELLOW + "=" * 60)
+    print(Fore.WHITE + "Version 2.0 | Developed by Hibana | Use Responsibly".center(60))
+    print(Fore.RED + "=" * 60 + "\n")
 
 def explanation():
-    time.sleep(2)
-    print("Welcome to the Hibana Doxxer!")
-    time.sleep(2)
-    print("This tool is designed to gather information about a target.")
-    time.sleep(2)
-    print("\033[31mPlease use responsibly and respect privacy laws.\033[0m")
+    print(Fore.GREEN + "\n[+] Welcome to Hibana's OSINT Toolkit!")
+    time.sleep(1)
+    print(Fore.YELLOW + "[~] This tool provides various information gathering utilities")
+    time.sleep(1)
+    print(Fore.RED + "[!] WARNING: Use this tool responsibly and legally")
+    time.sleep(1)
+    print(Fore.CYAN + "[*] Always respect privacy laws and terms of service\n")
+    time.sleep(1)
 
-
+def print_section_header(title):
+    print(Fore.YELLOW + "\n" + "=" * 60)
+    print(Fore.MAGENTA + f"[ {title.upper()} ]".center(60))
+    print(Fore.YELLOW + "=" * 60)
 
 def advanced_password_generator():
-    # Ordner erstellen
+    print_section_header("Advanced Password Generator")
+    print(Fore.CYAN + "\nThis will create a customized password list based on personal information")
+    
+    # Create directory if it doesn't exist
     os.makedirs("password_lists", exist_ok=True)
 
-    name = input("Vorname: ").strip()
-    nachname = input("Nachname: ").strip()
-    alter = input("Alter (optional): ").strip()
-    favword = input("Lieblingswort / Nickname (optional): ").strip()
-    favnum = input("Lieblingszahl (optional): ").strip()
+    print(Fore.GREEN + "\n[+] Please provide the following information:")
+    name = input(Fore.WHITE + "First Name: ").strip()
+    nachname = input(Fore.WHITE + "Last Name: ").strip()
+    alter = input(Fore.WHITE + "Age (optional): ").strip()
+    favword = input(Fore.WHITE + "Favorite Word/Nickname (optional): ").strip()
+    favnum = input(Fore.WHITE + "Favorite Number (optional): ").strip()
 
+    # Processing the input
     parts = [name, nachname]
     if favword:
         parts.append(favword)
@@ -86,7 +71,7 @@ def advanced_password_generator():
     symbols = ["!", "?", "@", "_", ".", "$"]
 
     def leetspeak(word):
-        mapping = str.maketrans({  # Leetspeak Mapping
+        mapping = str.maketrans({
             'a': '@', 'A': '@',
             'e': '3', 'E': '3',
             'i': '1', 'I': '1',
@@ -122,7 +107,7 @@ def advanced_password_generator():
                         combos.add(f"{var}{sym}")
                         combos.add(f"{sym}{var}")
 
-    # Speicherpfad mit Vor- und Nachname
+    # Save to file
     filename = f"{name}_{nachname}_password_list.txt"
     output_file = os.path.join("password_lists", filename)
 
@@ -130,34 +115,35 @@ def advanced_password_generator():
         for pw in sorted(combos):
             f.write(pw + "\n")
 
-    print(f"\n[+] {len(combos)} Passwörter generiert und gespeichert unter '{output_file}'\n")   # Passwörter generiert und gespeichert
-
-
-
-
-
-
-# Email Generator Funktion
+    print(Fore.GREEN + f"\n[+] Successfully generated {len(combos)} passwords")
+    print(Fore.CYAN + f"[*] Saved to: {output_file}\n")
 
 def email_generator():
-    name = input("Vorname: ").strip().lower()
-    nachname = input("Nachname: ").strip().lower()
-    alter = input("Alter (optional): ").strip()
-    domain_choice = input("Domain wählen [1] gmail.com [2] icloud.com: ").strip()  # Auswahl der Domain
+    print_section_header("Email Generator")
+    print(Fore.CYAN + "\nThis generates possible email addresses based on personal information")
+    
+    name = input(Fore.WHITE + "\nFirst Name: ").strip().lower()
+    nachname = input(Fore.WHITE + "Last Name: ").strip().lower()
+    alter = input(Fore.WHITE + "Age (optional): ").strip()
+    
+    print(Fore.CYAN + "\n[+] Select email domain:")
+    print(Fore.WHITE + "1. gmail.com")
+    print(Fore.WHITE + "2. icloud.com")
+    domain_choice = input(Fore.WHITE + "Your choice (1-2): ").strip()
 
     if domain_choice == "1":
         domain = "@gmail.com"
     elif domain_choice == "2":
         domain = "@icloud.com"
     else:
-        print("Ungültige Auswahl.")
-        return
+        print(Fore.RED + "[!] Invalid choice, defaulting to gmail.com")
+        domain = "@gmail.com"
 
     geburtsjahr = ""
     if alter.isdigit():
         geburtsjahr = str(2025 - int(alter))
 
-    kombis = set([     # Basis-Kombinationen
+    kombis = set([
         f"{name}{nachname}",
         f"{name}.{nachname}",
         f"{name}_{nachname}",
@@ -184,14 +170,12 @@ def email_generator():
 
     email_list = sorted({f"{k}{domain}" for k in kombis})
 
-    print("\n[+] Generierte mögliche E-Mail-Adressen:")
+    print(Fore.GREEN + f"\n[+] Generated {len(email_list)} possible email addresses:")
     for mail in email_list:
-        print(mail)
-    print(f"\n[+] Insgesamt {len(email_list)} mögliche Adressen generiert.\n")
+        print(Fore.WHITE + mail)
+    print(Fore.CYAN + "\n[*] Tip: Try these with password recovery options\n")
 
-
-
-def check_instagram(username):   #Instagram
+def check_instagram(username):
     url = f"https://www.instagram.com/{username}/"
     headers = {"User-Agent": "Mozilla/5.0"}
     try:
@@ -202,7 +186,6 @@ def check_instagram(username):   #Instagram
         match = re.search(r"<title>(.*?)</title>", response.text)
         if match:
             title = match.group(1)
-            # Instagram zeigt im Titel "Page Not Found" wenn nicht existent
             if "Page Not Found" in title:
                 return False, None
             if username.lower() in title.lower():
@@ -213,26 +196,21 @@ def check_instagram(username):   #Instagram
     except requests.RequestException:
         return None, None
 
-
-
-def check_steam(username):     #Steam
+def check_steam(username):
     url = f"https://steamcommunity.com/id/{username}"
-    headers = {"User-Agent": "Mozilla/5.0"}   # User-Agent setzen, um Blockierungen zu vermeiden
+    headers = {"User-Agent": "Mozilla/5.0"}
     try:
         response = requests.get(url, headers=headers, timeout=5)
         if response.status_code != 200:
             return False, None
         
-        # Typischer Fehlertext bei nicht vorhandenem Profil
         if "The specified profile could not be found" in response.text or "Error" in response.text:
             return False, None
         return True, url
     except requests.RequestException:
         return None, None
 
-
-
-def check_soundcloud(username):       #SoundCloud
+def check_soundcloud(username):
     url = f"https://soundcloud.com/{username}"
     headers = {"User-Agent": "Mozilla/5.0"}
     try:
@@ -240,82 +218,88 @@ def check_soundcloud(username):       #SoundCloud
         if response.status_code == 404:
             return False, None
         
-        # SoundCloud zeigt oft 200, aber wenn das Profil nicht existiert, steht "Page Not Found"
-        if "Page Not Found" in response.text or "The page you were looking for doesn’t exist" in response.text:
+        if "Page Not Found" in response.text or "The page you were looking for doesn't exist" in response.text:
             return False, None
         
         return True, url
     except requests.RequestException:
         return None, None
 
-
-
-def user_lookup():    # Benutzerabfrage
-    username = input("Enter the username to look up: ")
-    print(f"\nGathering information for user: {username}")
+def user_lookup():
+    print_section_header("Username Lookup")
+    username = input(Fore.WHITE + "\nEnter the username to search: ")
+    print(Fore.CYAN + f"\n[~] Searching for {username} across platforms...\n")
     time.sleep(1)
 
     services = [
-    ("instagram", check_instagram),
-    ("steam", check_steam),
-    ("soundcloud", check_soundcloud),
-]
+        ("Instagram", check_instagram),
+        ("Steam", check_steam),
+        ("SoundCloud", check_soundcloud),
+    ]
 
+    results = []
     for name, func in services:
         found, url = func(username)
         if found:
-            print(f"({name}) {url}")
+            print(Fore.GREEN + f"[+] {name}: Found - {url}")
+            results.append((name, url))
         elif found is False:
-            # Nur anzeigen, wenn es definitiv nicht existiert -> nichts ausgeben
-            pass
+            print(Fore.RED + f"[-] {name}: Not found")
         else:
-            # found == None (Fehler bei Anfrage)
-            print(f"({name}) (-)")
-        time.sleep(1)
+            print(Fore.YELLOW + f"[?] {name}: Could not verify (connection error)")
 
-def webhook_spam():   #Webhook Spam
-    print("\n--- Webhook Spam ---")
-    webhook_url = input("Enter the Discord Webhook URL: ").strip()
-    message = input("Enter the message to spam: ").strip()
-    count = input("How many messages do you want to send? (Enter a number): ").strip()
+    if not any(found for found, _ in services):
+        print(Fore.RED + "\n[!] No accounts found with this username")
+
+def webhook_spam():
+    print_section_header("Webhook Spammer")
+    print(Fore.RED + "\nWARNING: Use of this tool may violate Discord's Terms of Service")
+    print(Fore.RED + "Use at your own risk!\n")
+    
+    webhook_url = input(Fore.WHITE + "Enter Discord Webhook URL: ").strip()
+    message = input(Fore.WHITE + "Message to send: ").strip()
+    count = input(Fore.WHITE + "Number of messages (default 10): ").strip()
 
     try:
-        count = int(count)
+        count = int(count) if count else 10
     except ValueError:
-        print("Invalid number, defaulting to 10 messages.")
+        print(Fore.RED + "[!] Invalid number, using default (10)")
         count = 10
 
-    print(f"Sending {count} messages to the webhook...")
+    print(Fore.CYAN + f"\n[~] Preparing to send {count} messages...")
+    time.sleep(1)
+
     for i in range(count):
         data = {"content": message}
         try:
             response = requests.post(webhook_url, json=data)
             if response.status_code == 204:
-                print(f"Message {i+1}/{count} sent successfully.")
+                print(Fore.GREEN + f"[+] Message {i+1}/{count} sent")
             else:
-                print(f"Failed to send message {i+1}. Status code: {response.status_code}")
+                print(Fore.RED + f"[!] Failed to send message {i+1} (Status: {response.status_code})")
         except requests.RequestException as e:
-            print(f"Error sending message {i+1}: {e}")
+            print(Fore.RED + f"[!] Error sending message {i+1}: {str(e)}")
 
-        time.sleep(0.5)  # 1 Sekunde Pause zwischen Nachrichten, um Spam-Blockierungen zu vermeiden
+        time.sleep(0.5)
 
-    print("Finished sending messages.")
-
-
-
-# Main Menu und Funktionsaufruf
+    print(Fore.CYAN + "\n[+] Message sending complete\n")
 
 def main_menu():
+    print_banner()
     explanation()
+    
     while True:
-        print("\nMain Menu:")    #funktionen
-        print("1. User Lookup")     
-        print("2. Webhook Spam")
-        print("3. Email Generator")
-        print("4. Advanced Password List Generator")
-        print("5. Exit")
+        print(Fore.YELLOW + "\n" + "=" * 60)
+        print(Fore.MAGENTA + "MAIN MENU".center(60))
+        print(Fore.YELLOW + "=" * 60)
+        print(Fore.CYAN + "1. Username Lookup")
+        print(Fore.CYAN + "2. Webhook Spammer")
+        print(Fore.CYAN + "3. Email Generator")
+        print(Fore.CYAN + "4. Advanced Password Generator")
+        print(Fore.RED + "5. Exit")
+        print(Fore.YELLOW + "=" * 60)
 
-        choice = input("Enter your choice: ")
+        choice = input(Fore.WHITE + "\nSelect an option (1-5): ").strip()
 
         if choice == '1':
             user_lookup()
@@ -326,10 +310,13 @@ def main_menu():
         elif choice == '4':
             advanced_password_generator()
         elif choice == '5':
-            print("Exiting the Hibanas Doxxer. Goodbye!")
+            print(Fore.CYAN + "\n[+] Thank you for using Hibana's OSINT Toolkit")
+            print(Fore.YELLOW + "[~] Remember to use these tools responsibly!")
             break
         else:
-            print("Invalid choice, please try again.")
+            print(Fore.RED + "[!] Invalid choice, please try again")
+
+        input(Fore.CYAN + "\nPress Enter to return to main menu...")
 
 if __name__ == "__main__":
     main_menu()
