@@ -1,6 +1,6 @@
 import time
 import requests 
-import re   
+import re      
 
 
 
@@ -58,6 +58,59 @@ def explanation():
     print("This tool is designed to gather information about a target.")
     time.sleep(2)
     print("\033[31mPlease use responsibly and respect privacy laws.\033[0m")
+
+
+# Email Generator Funktion
+
+def email_generator():
+    name = input("Vorname: ").strip().lower()
+    nachname = input("Nachname: ").strip().lower()
+    alter = input("Alter (optional): ").strip()
+    domain_choice = input("Domain wählen [1] gmail.com [2] icloud.com: ").strip()  # Auswahl der Domain
+
+    if domain_choice == "1":
+        domain = "@gmail.com"
+    elif domain_choice == "2":
+        domain = "@icloud.com"
+    else:
+        print("Ungültige Auswahl.")
+        return
+
+    geburtsjahr = ""
+    if alter.isdigit():
+        geburtsjahr = str(2025 - int(alter))
+
+    kombis = set([     # Basis-Kombinationen
+        f"{name}{nachname}",
+        f"{name}.{nachname}",
+        f"{name}_{nachname}",
+        f"{name[0]}{nachname}",
+        f"{name[0]}.{nachname}",
+        f"{nachname}{name}",
+        f"{nachname}.{name}",
+        f"{name}{nachname[0]}",
+        f"{name}.{nachname[0]}",
+    ])
+
+    if alter.isdigit():
+        for base in list(kombis):
+            kombis.add(f"{base}{alter}")
+            kombis.add(f"{base}{geburtsjahr}")
+            kombis.add(f"{alter}{base}")
+
+    kombis.add(f"{name[0]}{nachname[0]}")
+    kombis.add(f"{name[0]}_{nachname[0]}")
+
+    for num in range(1, 100):
+        kombis.add(f"{name}{num}")
+        kombis.add(f"{nachname}{num}")
+
+    email_list = sorted({f"{k}{domain}" for k in kombis})
+
+    print("\n[+] Generierte mögliche E-Mail-Adressen:")
+    for mail in email_list:
+        print(mail)
+    print(f"\n[+] Insgesamt {len(email_list)} mögliche Adressen generiert.\n")
 
 
 
@@ -180,16 +233,19 @@ def main_menu():  # Hauptmenü
     while True:
         print("\nMain Menu:")
         print("1. User Lookup")
-        print("2. Webhook Spam")   # Neue Option
-        print("3. Exit")
+        print("2. Webhook Spam")
+        print("3. Email Generator")   # Neue Option
+        print("4. Exit")
 
         choice = input("Enter your choice: ")
 
         if choice == '1':
             user_lookup()
         elif choice == '2':
-            webhook_spam()      # Funktion aufrufen
+            webhook_spam()
         elif choice == '3':
+            email_generator()  # <-- hier wird der Generator aufgerufen
+        elif choice == '4':
             print("Exiting the Hibanas Doxxer. Goodbye!")
             break
         else:
