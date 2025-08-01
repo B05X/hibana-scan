@@ -1,6 +1,7 @@
 import time
 import requests 
-import re      
+import re 
+import os        
 
 
 
@@ -58,6 +59,82 @@ def explanation():
     print("This tool is designed to gather information about a target.")
     time.sleep(2)
     print("\033[31mPlease use responsibly and respect privacy laws.\033[0m")
+
+
+
+def advanced_password_generator():
+    # Ordner erstellen
+    os.makedirs("password_lists", exist_ok=True)
+
+    name = input("Vorname: ").strip()
+    nachname = input("Nachname: ").strip()
+    alter = input("Alter (optional): ").strip()
+    favword = input("Lieblingswort / Nickname (optional): ").strip()
+    favnum = input("Lieblingszahl (optional): ").strip()
+
+    parts = [name, nachname]
+    if favword:
+        parts.append(favword)
+
+    numbers = []
+    if alter.isdigit():
+        geburtsjahr = str(2025 - int(alter))
+        numbers.extend([alter, geburtsjahr])
+    if favnum.isdigit():
+        numbers.append(favnum)
+
+    symbols = ["!", "?", "@", "_", ".", "$"]
+
+    def leetspeak(word):
+        mapping = str.maketrans({  # Leetspeak Mapping
+            'a': '@', 'A': '@',
+            'e': '3', 'E': '3',
+            'i': '1', 'I': '1',
+            'o': '0', 'O': '0',
+            's': '$', 'S': '$'
+        })
+        return word.translate(mapping)
+
+    combos = set()
+
+    for part in parts:
+        base_variants = {part.lower(), part.upper(), part.capitalize(), leetspeak(part)}
+        for var in base_variants:
+            combos.add(var)
+            for num in numbers:
+                combos.add(f"{var}{num}")
+                combos.add(f"{num}{var}")
+            for sym in symbols:
+                combos.add(f"{var}{sym}")
+                combos.add(f"{sym}{var}")
+
+    for p1 in parts:
+        for p2 in parts:
+            if p1 != p2:
+                combined = p1 + p2
+                variants = {combined.lower(), combined.upper(), combined.capitalize(), leetspeak(combined)}
+                for var in variants:
+                    combos.add(var)
+                    for num in numbers:
+                        combos.add(f"{var}{num}")
+                        combos.add(f"{num}{var}")
+                    for sym in symbols:
+                        combos.add(f"{var}{sym}")
+                        combos.add(f"{sym}{var}")
+
+    # Speicherpfad mit Vor- und Nachname
+    filename = f"{name}_{nachname}_password_list.txt"
+    output_file = os.path.join("password_lists", filename)
+
+    with open(output_file, "w", encoding="utf-8") as f:
+        for pw in sorted(combos):
+            f.write(pw + "\n")
+
+    print(f"\n[+] {len(combos)} Passwörter generiert und gespeichert unter '{output_file}'\n")   # Passwörter generiert und gespeichert
+
+
+
+
 
 
 # Email Generator Funktion
@@ -226,16 +303,17 @@ def webhook_spam():   #Webhook Spam
 
 
 
+# Main Menu und Funktionsaufruf
 
-
-def main_menu():  # Hauptmenü
+def main_menu():
     explanation()
     while True:
-        print("\nMain Menu:")
-        print("1. User Lookup")
+        print("\nMain Menu:")    #funktionen
+        print("1. User Lookup")     
         print("2. Webhook Spam")
-        print("3. Email Generator")   # Neue Option
-        print("4. Exit")
+        print("3. Email Generator")
+        print("4. Advanced Password List Generator")
+        print("5. Exit")
 
         choice = input("Enter your choice: ")
 
@@ -244,8 +322,10 @@ def main_menu():  # Hauptmenü
         elif choice == '2':
             webhook_spam()
         elif choice == '3':
-            email_generator()  # <-- hier wird der Generator aufgerufen
+            email_generator()
         elif choice == '4':
+            advanced_password_generator()
+        elif choice == '5':
             print("Exiting the Hibanas Doxxer. Goodbye!")
             break
         else:
@@ -253,4 +333,3 @@ def main_menu():  # Hauptmenü
 
 if __name__ == "__main__":
     main_menu()
-
